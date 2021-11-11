@@ -11,9 +11,9 @@ class Reverser
                 if (ctype_upper($value)) array_push($uppers, $key);
             }
             $item = implode($item);
-            $item = preg_replace_callback('/\w+/', function($found) {
+            $item = preg_replace_callback('/\w+/u', function($found) {
                 foreach ($found as $item) {
-                    return strrev($item);
+                    return $this->strrev_enc($item);
                 }
             }, $item);
             $item = str_split($item);
@@ -25,5 +25,12 @@ class Reverser
         }
         $string_reversed = join(' ', $string_reversed);
         return $string_reversed;
+    }
+    public function strrev_enc($str)
+    {
+	    $str = iconv('utf-8', 'windows-1251', $str);
+	    $str = strrev($str);
+	    $str = iconv('windows-1251', 'utf-8', $str);
+	    return $str;
     }
 }
